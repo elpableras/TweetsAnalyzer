@@ -1,0 +1,94 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Práctica Web Semántica</title>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js">
+        </script>
+        
+        <!--Load the AJAX API-->
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>      
+		<link rel="stylesheet" href="css/style.css" media="screen">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        
+    </head>
+    <body>
+        <img src="images/twitter.jpg" WIDTH=400 HEIGHT=200 ALT="Twitter" align=right />
+        <h1>Analizar Tweet</h1>        
+
+        <h2>Tweet: <input type="text" class="button medium yellow" size="100" maxlength="140" name="base" id="base" value="¿LA NOBLEZA NÓRMALMENTE, SE MOLESTA POR SER OBÉSA?"/></h2>
+        <button type="button" class="button medium blue" id="analizarBtn">Pulse para Analizar</button>
+       
+		<div id="resultado">
+            <p>Frase sin signos de puntuación y en minúsculas: <span></span></p>
+        </div>		
+        <div id="resultado2">
+            <p>Valor de las palabras: <span></span></p>
+        </div>
+        <div id="resultado3">
+            <p>Promedio de todas las palabras: <span></span><p>
+        </div>
+        <div id="resultado4">
+            <p>Idioma: <span></span><p>
+        </div>
+        <br>        
+        <!--Div that will hold the column chart-->
+        <div id="visualization"></div>
+        <div id="face" align=center><p><span></span><p></div>
+        <script type="text/javascript">            
+            google.load('visualization', '1', {packages: ['table']});
+             
+            jQuery("#analizarBtn").click(function(){                
+                var base = jQuery("#base").val();                
+                jQuery.get("http://156.35.98.12:8082/AnalizadorSentimiento/webresources/analizartweet",{
+                    base:base
+                },function(resultado){                     
+                    jQuery("#resultado span").text(resultado);
+                    var arrayElementos = $("#resultado span").text().split(" - ");
+                    jQuery("#resultado span").text(arrayElementos[0]);
+                    jQuery("#resultado2 span").text(arrayElementos[1]);
+                    jQuery("#resultado3 span").text(arrayElementos[2]);
+                    jQuery("#resultado4 span").text(arrayElementos[3]);
+                    var arrayValorPalabras = arrayElementos[1].split(" ");
+                    
+                    // Create the data table.
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Palabra');
+                    data.addColumn('number', 'Valor (0-10)');
+                    
+                    data.addRows(arrayValorPalabras.length+1);
+                    for (var i = 0; i < arrayValorPalabras.length; ++i) {                        
+                        var datos = arrayValorPalabras[i].split(":");                       
+                        data.setCell(i, 0, datos[0]);                        
+                        data.setCell(i, 1, parseInt(datos[1]));                                                                        
+                    }                
+                    data.setCell(i, 0, "PROMEDIO");
+                    data.setCell(i, 1, parseInt(arrayElementos[2]));
+                    if((parseInt(arrayElementos[2]) > 0) && (parseInt(arrayElementos[2]) <= 4)){
+                        $("[prepended=yes]", "#face span").remove();
+                        $("<img src='images/sad.jpg'/>").prependTo("#face span").attr('prepended','yes');
+                    }else if ((parseInt(arrayElementos[2]) > 4) && (parseInt(arrayElementos[2]) <= 5)){
+                        $("[prepended=yes]", "#face span").remove();
+                        $("<img src='images/normal.jpg'/>").prependTo("#face span").attr('prepended','yes');
+                    }else if ((parseInt(arrayElementos[2]) > 5) && (parseInt(arrayElementos[2]) <= 10)){
+                        $("[prepended=yes]", "#face span").remove();
+                        $("<img src='images/happy.jpg'/>").prependTo("#face span").attr('prepended','yes');
+                    }
+                    // Create and draw the visualization.
+                    var table = new google.visualization.Table(document.getElementById('visualization'));
+
+                    var formatter = new google.visualization.TableBarFormat({width: 120});
+                    formatter.format(data, 1); // Apply formatter to second column
+
+                    table.draw(data, {allowHtml: true, showRowNumber: true});
+                   // google.setOnLoadCallback(drawVisualization);
+                });                
+            });            
+        </script>                                              
+        <footer>
+            <p> @ Copyright Pablo González Jiménez UO173780 </p>
+        </footer>
+    </body>
+</html>
