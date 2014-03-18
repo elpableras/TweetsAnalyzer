@@ -1,4 +1,4 @@
-TweetsAnalyzer-
+TweetsAnalyzer
 ===============
 
 Se ha desarrollado un servicio web RESTful usando para ello NetBeans 7.3, como servidor GlassFish v3.1, que usaremos con las características de Java EE6. 
