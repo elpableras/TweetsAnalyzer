@@ -1,20 +1,22 @@
 TweetsAnalyzer
 ===============
 
-Se ha desarrollado un servicio web RESTful usando para ello NetBeans 7.3, como servidor GlassFish v3.1, que usaremos con las características de Java EE6. 
 
+I had developed a RESTful web service, using NetBeans 7.3 for it, and as server GlassFish v3.1, I used the features of Java EE6.
 
-Se utilizará el método GET, para hacer la petición y obtener así la información por medio de un parámetro el cual será un String que retornará toda la información, luego con sucesivos split, crearemos arrays con la información que mostraremos, en este caso sobre el Tweet analizado. La clase que contendrá estos métodos es como una clase EJB Facade de una aplicación Java EE, aunque también podría haberse utilizado Jersey. 
+The GET method is used to make the request and obtain information through a parameter which return a String that all information, then with successive split, I create arrays with the information that after I will show.
+The class that contain these methods is as an EJB Facade class of a Java EE application, but also could have been used Jersey.
 
+To display the Web Service, I has created a simple HTML, which contains JavaScript, I use it with AJAX for consume the JavaScript, using jQuery.
 
-Para mostrar el Servicio Web, se ha creado un HTML sencillo, el cual contiene JavaScript, que utilizaremos junto a AJAX y para consumir el JavaScript, utilizaremos jQuery.
+To the URL I will pass the parameter ("base") of Tweet, written in HTML, which will be analyzer for the application and return a String data.
 
-A dicha dirección le pasaremos el parámetro (“base”) del Tweet escrito en el HTML, que será analizado con la aplicación y devolverá con el método GET el String con los datos.
+Once the data is in the HTML, I split it in pieces and I will be used for:
 
-Una vez con los datos en el HTML, se despiezarán y se utilizarán para: 
+- Show the Tweet lowercase sentence with punctuation removed
+- The value of each of the words analyzed
+- The average of all
+- The language is the Tweet
 
-- Mostrar la frase del Tweet en minúscula con los signos de puntuación quitados 
-- El valor de cada una de las palabras analizadas 
-- El promedio de todas ellas 
-- El idioma en que se encuentra el Tweet 
-- Después con los datos de los valores de las palabras se creara un gráfico de tabla, con la utilidad que da la API de visualización de gráficos de Google
+After with the data word values I create a chart table with the utility gives the API Google Chart, for show, a happy face, if the Tweet data is positive, a normal face if the Tweet data is normal or a sad face if the Tweet data is negative.
+
